@@ -26,6 +26,12 @@ namespace React.Net.Controllers
             });
         }
 
+        [HttpGet("[action]")]
+        public JsonResult GetTime()
+        {
+            return Json(DateTime.Now.ToLocalTime().ToString());
+        }
+
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }
