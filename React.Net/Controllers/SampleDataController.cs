@@ -62,5 +62,6 @@ namespace React.Net.Controllers
             public int CardNum { get; set; }
             public int TTL { get; set; }
         }
+
     }
 }
