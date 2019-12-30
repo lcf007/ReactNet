@@ -9,21 +9,38 @@ namespace React.Net.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public IEnumerable<Store> GetStore()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 5).Select(index =>
             {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+                var rand = rng.Next(0, 100);
+                return new Store
+                {
+                    StoreID = index,
+                    ActiveVTs = rand,
+                    AllocatedVTs = rand + rng.Next(0, 20)
+                };
+            }
+            );
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<VT> GetVT()
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 100).Select(index =>
+            {
+                var rand = rng.Next(100000000, 999999999);
+                return new VT
+                {
+                    VTID = index,
+                    CardNum = rand,
+                    TTL = rng.Next(0, 200)
+                };
+            }
+            );
         }
 
         [HttpGet("[action]")]
@@ -32,19 +49,18 @@ namespace React.Net.Controllers
             return Json(DateTime.Now.ToLocalTime().ToString());
         }
 
-        public class WeatherForecast
+        public class Store
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
+            public int StoreID { get; set; }
+            public int ActiveVTs { get; set; }
+            public int AllocatedVTs { get; set; }
+        }
 
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
+        public class VT
+        {
+            public int VTID { get; set; }
+            public int CardNum { get; set; }
+            public int TTL { get; set; }
         }
     }
 }
