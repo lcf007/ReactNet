@@ -10,7 +10,7 @@ namespace React.Net.Controllers
     public class SampleDataController : Controller
     {
         [HttpGet("[action]")]
-        public IEnumerable<Store> GetStore()
+        public IEnumerable<Store> GetStoreList()
         {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index =>
@@ -27,20 +27,42 @@ namespace React.Net.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<VT> GetVT()
+        public IEnumerable<VT> GetVTList(int storeid)
         {
             var rng = new Random();
             return Enumerable.Range(1, 100).Select(index =>
             {
-                var rand = rng.Next(100000000, 999999999);
+                var rand = rng.Next(100000, 999999);
                 return new VT
                 {
                     VTID = index,
-                    CardNum = rand,
-                    TTL = rng.Next(0, 200)
+                    CardNum = rand*1000+storeid,
+                    TTL = storeid
                 };
             }
             );
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<VTDetail> GetVT(int vtid)
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 100).Select(index =>
+            {
+                var rand = rng.Next(8888, 9999);
+                return new VTDetail
+                {
+                    Index = index,
+                    Game = rand*1000 + vtid
+                };
+            }
+            );
+        }
+
+        [HttpGet("[action]")]
+        public JsonResult Reset()
+        {
+            return Json(new{ status = "success" });
         }
 
         [HttpGet("[action]")]
@@ -61,6 +83,12 @@ namespace React.Net.Controllers
             public int VTID { get; set; }
             public int CardNum { get; set; }
             public int TTL { get; set; }
+        }
+
+        public class VTDetail
+        {
+            public int Index { get; set; }
+            public int Game { get; set; }
         }
 
     }
